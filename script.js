@@ -94,7 +94,17 @@ let datos = {
     aciertos: 0,
   },
   puzzle: {
-    piezas: ["🐱", "😺", "😸", "😹", "😻", "😼", "😽", "🙀", "😿"],
+    piezas: [
+      "images/puzzle/gato1/pieza0.jpg",
+      "images/puzzle/gato1/pieza1.jpg",
+      "images/puzzle/gato1/pieza2.jpg",
+      "images/puzzle/gato1/pieza3.jpg",
+      "images/puzzle/gato1/pieza4.jpg",
+      "images/puzzle/gato1/pieza5.jpg",
+      "images/puzzle/gato1/pieza6.jpg",
+      "images/puzzle/gato1/pieza7.jpg",
+      "images/puzzle/gato1/pieza8.jpg",
+    ],
     posiciones: new Array(9),
     completado: false,
   },
@@ -409,12 +419,14 @@ function inicializarPuzzle() {
 
   datos.puzzle.piezas.forEach((pieza, index) => {
     html +=
-      '<span style="margin: 0 10px; cursor: pointer;" id="pieza-' +
+      '<span style="margin: 0 10px; cursor: pointer; display: inline-block; width:48px; height:48px;" id="pieza-' +
       index +
       '" onclick="seleccionarPieza(' +
       index +
       ')">' +
+      '<img src="' +
       pieza +
+      '" alt="pieza" style="width:100%; height:100%; object-fit:cover; border-radius:6px;" />' +
       "</span>";
   });
 
@@ -446,8 +458,8 @@ function colocarPieza(posicion) {
   }
 
   datos.puzzle.posiciones[posicion] = piezaSeleccionada;
-  document.getElementById("puzzle-" + posicion).textContent =
-    datos.puzzle.piezas[piezaSeleccionada];
+  document.getElementById("puzzle-" + posicion).innerHTML =
+    '<img src="' + datos.puzzle.piezas[piezaSeleccionada] + '" alt="pieza" />';
   document.getElementById("puzzle-" + posicion).classList.add("colocada");
   document.getElementById("pieza-" + piezaSeleccionada).style.display = "none";
 

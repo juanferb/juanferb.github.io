@@ -247,6 +247,16 @@ header p {
   cursor: default;
 }
 
+/* Ajustes para las imágenes del puzzle */
+.pieza-puzzle img {
+  max-width: 100%;
+  max-height: 100%;
+  display: block;
+  margin: 0 auto;
+  border-radius: 6px;
+  object-fit: cover;
+}
+
 /* BOTÓN VOLVER */
 .btn-volver {
   display: block;
