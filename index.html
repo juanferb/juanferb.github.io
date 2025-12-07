@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🐱 Juegos de Gatos</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>🐱 ¡Bienvenido a los Juegos de Gatos de Xiana! 🐱</h1>
+        <p>Elige tu juego favorito y diviértete</p>
+      </header>
+
+      <nav class="menu-principal">
+        <button class="btn-menu" onclick="cargarJuego('memoria')">
+          🎮 Juego de Memoria
+        </button>
+        <button class="btn-menu" onclick="cargarJuego('adivinanza')">
+          🤔 Adivina la Raza
+        </button>
+        <button class="btn-menu" onclick="cargarJuego('sonidos')">
+          🔊 Quiz de Sonidos
+        </button>
+        <button class="btn-menu" onclick="cargarJuego('puzzle')">
+          🧩 Puzzle Gato
+        </button>
+        <button class="btn-menu" onclick="cargarJuego('reflejos')">
+          ⚡ Juego de Reflejos
+        </button>
+      </nav>
+
+      <main id="contenido-juego">
+        <!-- Los juegos se cargarán aquí -->
+      </main>
+
+      <button
+        id="btn-volver"
+        class="btn-volver"
+        onclick="volverAlMenu()"
+        style="display: none"
+      >
+        ← Volver al Menú
+      </button>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
