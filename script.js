@@ -421,10 +421,12 @@ function inicializarPuzzle() {
     html +=
       '<span style="margin: 0 10px; display: inline-block; width:48px; height:48px;" id="pieza-' +
       index +
-      '">' +
-      '<img draggable="true" ondragstart="dragStartPiece(event, ' +
+      '">'
+      + '<img draggable="true" ondragstart="dragStartPiece(event, ' +
       index +
-      ')" src="' +
+      ')" ontouchstart="touchStartPiece(event, ' +
+      index +
+      ')" ontouchend="touchEndPiece(event)" src="' +
       pieza +
       '" alt="pieza" style="width:100%; height:100%; object-fit:cover; border-radius:6px; cursor:grab;" />' +
       "</span>";
@@ -509,6 +511,82 @@ function dropOnCell(event, posicion) {
         '<div class="mensaje-exito">🎉 ¡Puzzle completado!</div>';
     }, 300);
   }
+}
+
+// Shared placement function used by both mouse drop and touch
+function placePiece(piezaIndex, posicion) {
+  const cell = document.getElementById("puzzle-" + posicion);
+  if (!cell) return;
+
+  // if the cell already has a correct piece, ignore
+  if (
+    datos.puzzle.posiciones[posicion] !== undefined &&
+    datos.puzzle.posiciones[posicion] === posicion
+  ) {
+    return;
+  }
+
+  const piezaElem = document.getElementById("pieza-" + piezaIndex);
+
+  datos.puzzle.posiciones[posicion] = piezaIndex;
+  cell.innerHTML = '<img src="' + datos.puzzle.piezas[piezaIndex] + '" alt="pieza" />';
+
+  if (piezaIndex === posicion) {
+    cell.classList.add("colocada");
+    if (piezaElem) piezaElem.style.display = "none";
+  } else {
+    cell.classList.add("incorrecta");
+    setTimeout(() => {
+      cell.classList.remove("incorrecta");
+      cell.innerHTML = "?";
+      datos.puzzle.posiciones[posicion] = undefined;
+    }, 900);
+  }
+
+  const completadoCorrecto = datos.puzzle.posiciones.every((p, idx) => p === idx);
+  if (completadoCorrecto) {
+    setTimeout(() => {
+      document.getElementById("contenido-juego").innerHTML +=
+        '<div class="mensaje-exito">🎉 ¡Puzzle completado!</div>';
+    }, 300);
+  }
+}
+
+// Touch handlers for mobile devices
+let _touchPiezaIndex = null;
+function touchStartPiece(event, index) {
+  // prevent default to avoid scrolling/zooming
+  event.preventDefault();
+  _touchPiezaIndex = index;
+}
+
+function touchEndPiece(event) {
+  event.preventDefault();
+  if (_touchPiezaIndex === null) return;
+  const touch = event.changedTouches && event.changedTouches[0];
+  if (!touch) return;
+
+  // find the element at the touch position
+  const el = document.elementFromPoint(touch.clientX, touch.clientY);
+  if (!el) {
+    _touchPiezaIndex = null;
+    return;
+  }
+
+  // find ancestor cell
+  let cell = el;
+  while (cell && !cell.id?.startsWith("puzzle-")) {
+    cell = cell.parentElement;
+  }
+
+  if (cell && cell.id) {
+    const posicion = parseInt(cell.id.replace("puzzle-", ""), 10);
+    if (!Number.isNaN(posicion)) {
+      placePiece(_touchPiezaIndex, posicion);
+    }
+  }
+
+  _touchPiezaIndex = null;
 }
 
 function colocarPieza(posicion) {
