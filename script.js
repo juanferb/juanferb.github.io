@@ -110,12 +110,18 @@ let datos = {
   },
 };
 
+// Función para ir al menú desde la portada
+function irAlMenu() {
+  document.getElementById("portada-section").style.display = "none";
+  document.getElementById("menu-container").style.display = "block";
+}
+
 // Función principal para cargar juegos
 function cargarJuego(tipo) {
   juegoActual = tipo;
+  document.getElementById("pantalla-inicio").style.display = "none";
+  document.getElementById("juego-container").style.display = "block";
   document.getElementById("btn-volver").style.display = "block";
-  document.querySelector(".menu-principal").style.display = "none";
-  document.querySelector("header p").style.display = "none";
 
   const contenido = document.getElementById("contenido-juego");
 
@@ -421,8 +427,8 @@ function inicializarPuzzle() {
     html +=
       '<span style="margin: 0 10px; display: inline-block; width:48px; height:48px;" id="pieza-' +
       index +
-      '">'
-      + '<img draggable="true" ondragstart="dragStartPiece(event, ' +
+      '">' +
+      '<img draggable="true" ondragstart="dragStartPiece(event, ' +
       index +
       ')" ontouchstart="touchStartPiece(event, ' +
       index +
@@ -508,7 +514,7 @@ function dropOnCell(event, posicion) {
   if (completadoCorrecto) {
     setTimeout(() => {
       document.getElementById("contenido-juego").innerHTML +=
-        '<div class="mensaje-exito">🎉 ¡Puzzle completado!</div>';
+        '<div class="mensaje-exito">🎉 ¡Correcto!</div>';
     }, 300);
   }
 }
@@ -529,7 +535,8 @@ function placePiece(piezaIndex, posicion) {
   const piezaElem = document.getElementById("pieza-" + piezaIndex);
 
   datos.puzzle.posiciones[posicion] = piezaIndex;
-  cell.innerHTML = '<img src="' + datos.puzzle.piezas[piezaIndex] + '" alt="pieza" />';
+  cell.innerHTML =
+    '<img src="' + datos.puzzle.piezas[piezaIndex] + '" alt="pieza" />';
 
   if (piezaIndex === posicion) {
     cell.classList.add("colocada");
@@ -543,7 +550,9 @@ function placePiece(piezaIndex, posicion) {
     }, 900);
   }
 
-  const completadoCorrecto = datos.puzzle.posiciones.every((p, idx) => p === idx);
+  const completadoCorrecto = datos.puzzle.posiciones.every(
+    (p, idx) => p === idx
+  );
   if (completadoCorrecto) {
     setTimeout(() => {
       document.getElementById("contenido-juego").innerHTML +=
@@ -645,11 +654,11 @@ function colocarPieza(posicion) {
 }
 
 // Función para volver al menú
-function volverAlMenu() {
+function volverAlInicio() {
   juegoActual = null;
+  document.getElementById("pantalla-inicio").style.display = "flex";
+  document.getElementById("juego-container").style.display = "none";
   document.getElementById("btn-volver").style.display = "none";
-  document.querySelector(".menu-principal").style.display = "grid";
-  document.querySelector("header p").style.display = "block";
   document.getElementById("contenido-juego").innerHTML = "";
   piezaSeleccionada = null;
 
